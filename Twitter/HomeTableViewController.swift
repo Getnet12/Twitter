@@ -16,9 +16,14 @@ class HomeTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadTweets()
         myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadTweets()
     }
     
     @objc func loadTweets(){
@@ -37,7 +42,6 @@ class HomeTableViewController: UITableViewController {
         }, failure: { Error in
             print("Could not retreive tweets!")
         })
-
     }
     
     func loadMoreTweets(){
@@ -72,7 +76,6 @@ class HomeTableViewController: UITableViewController {
         UserDefaults.standard.set(false, forKey: "userLoggedIn")
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCellTableViewCell
@@ -85,7 +88,6 @@ class HomeTableViewController: UITableViewController {
         let data = try? Data(contentsOf: imageUrl!)
         if let imageData = data{
             cell.profileImageView.image = UIImage(data: imageData)
-
         }
         return cell
     }
